@@ -21,10 +21,18 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  Input,
 } from "@chakra-ui/react";
 
 function App() {
   const [target, setTarget] = useState<Array<Skills>>([]);
+  const [inputData, setInputData] = useState<Skills>({
+    level1: "",
+    level2: "",
+    level3: "",
+    level: 0,
+    content: "",
+  });
 
   useEffect(() => {
     setTarget(
@@ -86,16 +94,8 @@ function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const addTarget = () => {
-    setTarget([
-      ...target,
-      {
-        level1: "Test",
-        level2: "Test",
-        level3: "Test",
-        level: 2,
-        content: "sss",
-      },
-    ]);
+    console.log(inputData);
+    setTarget([...target, inputData]);
     onClose();
   };
 
@@ -108,7 +108,38 @@ function App() {
           <ModalContent>
             <ModalHeader>Modal Title</ModalHeader>
             <ModalCloseButton />
-            <ModalBody>aaa</ModalBody>
+            <ModalBody>
+              <Input
+                value={inputData.level1}
+                onChange={(e) =>
+                  setInputData({ ...inputData, level1: e.target.value })
+                }
+              ></Input>
+              <Input
+                value={inputData.level2}
+                onChange={(e) =>
+                  setInputData({ ...inputData, level2: e.target.value })
+                }
+              ></Input>
+              <Input
+                value={inputData.level3}
+                onChange={(e) =>
+                  setInputData({ ...inputData, level3: e.target.value })
+                }
+              ></Input>
+              <Input
+                value={inputData.level}
+                onChange={(e) =>
+                  setInputData({ ...inputData, level: Number(e.target.value) })
+                }
+              ></Input>
+              <Input
+                value={inputData.content}
+                onChange={(e) =>
+                  setInputData({ ...inputData, content: e.target.value })
+                }
+              ></Input>
+            </ModalBody>
 
             <ModalFooter>
               <Button onClick={onClose}>Close</Button>
