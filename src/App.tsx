@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Skills } from "./types/Skill";
@@ -24,62 +24,80 @@ import {
 } from "@chakra-ui/react";
 
 function App() {
-  const targetUser: Array<Skills> = [
-    {
-      level1: "Zoo",
-      level2: "react",
-      level3: "Recoil",
-      level: 1,
-      content: "recoil is statement library",
-    },
-    {
-      level1: "App",
-      level2: "zoo",
-      level3: "zoo",
-      level: 1,
-      content: "recoil is statement library",
-    },
-    {
-      level1: "App",
-      level2: "zoo",
-      level3: "Recoil",
-      level: 1,
-      content: "recoil is statement library",
-    },
-    {
-      level1: "App",
-      level2: "react",
-      level3: "Recoil",
-      level: 1,
-      content: "recoil is statement library",
-    },
-  ];
+  const [target, setTarget] = useState<Array<Skills>>([]);
 
-  const sortedTargetUser = targetUser.sort((a, b) => {
-    if (a.level1 == b.level1) {
-      if (a.level2 == b.level2) {
-        if (a.level3 > b.level3) {
-          return 1;
+  useEffect(() => {
+    setTarget(
+      [
+        {
+          level1: "Zoo",
+          level2: "react",
+          level3: "Recoil",
+          level: 1,
+          content: "recoil is statement library",
+        },
+        {
+          level1: "App",
+          level2: "zoo",
+          level3: "zoo",
+          level: 1,
+          content: "recoil is statement library",
+        },
+        {
+          level1: "App",
+          level2: "zoo",
+          level3: "Recoil",
+          level: 1,
+          content: "recoil is statement library",
+        },
+        {
+          level1: "App",
+          level2: "react",
+          level3: "Recoil",
+          level: 1,
+          content: "recoil is statement library",
+        },
+      ].sort((a, b) => {
+        if (a.level1 == b.level1) {
+          if (a.level2 == b.level2) {
+            if (a.level3 > b.level3) {
+              return 1;
+            } else {
+              return -1;
+            }
+          } else {
+            if (a.level2 > b.level2) {
+              return 1;
+            } else {
+              return -1;
+            }
+          }
         } else {
-          return -1;
+          if (a.level1 > b.level1) {
+            return 1;
+          } else {
+            return -1;
+          }
         }
-      } else {
-        if (a.level2 > b.level2) {
-          return 1;
-        } else {
-          return -1;
-        }
-      }
-    } else {
-      if (a.level1 > b.level1) {
-        return 1;
-      } else {
-        return -1;
-      }
-    }
-  });
+      })
+    );
+  }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const addTarget = () => {
+    setTarget([
+      ...target,
+      {
+        level1: "Test",
+        level2: "Test",
+        level3: "Test",
+        level: 2,
+        content: "sss",
+      },
+    ]);
+    onClose();
+  };
 
   return (
     <div className="App">
@@ -94,7 +112,7 @@ function App() {
 
             <ModalFooter>
               <Button onClick={onClose}>Close</Button>
-              <Button>Test</Button>
+              <Button onClick={addTarget}>Test</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
@@ -112,7 +130,7 @@ function App() {
               </Tr>
             </Thead>
             <Tbody>
-              {sortedTargetUser.map((skill, index) => {
+              {target.map((skill, index) => {
                 return (
                   <Tr key={index}>
                     <Td>{index}</Td>
@@ -120,7 +138,7 @@ function App() {
                       <div
                         className={
                           index !== 0
-                            ? sortedTargetUser[index - 1].level1 == skill.level1
+                            ? target[index - 1].level1 == skill.level1
                               ? "noDisplay"
                               : "display"
                             : "display"
@@ -133,7 +151,7 @@ function App() {
                       <div
                         className={
                           index !== 0
-                            ? sortedTargetUser[index - 1].level2 == skill.level2
+                            ? target[index - 1].level2 == skill.level2
                               ? "noDisplay"
                               : "display"
                             : "display"
